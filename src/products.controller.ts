@@ -7,7 +7,7 @@ import {
   Put,
   Delete,
 } from '@nestjs/common';
-import { Product } from './products.model';
+import { Products } from './products.model';
 import { ProductsService } from './products.service';
 
 @Controller('products')
@@ -15,28 +15,30 @@ export class ProductsController {
   constructor(private productService: ProductsService) {}
 
   @Get()
-  getAll(): Product[] {
+  async getAll(): Promise<Products[]> {
     return this.productService.getAll();
   }
 
   @Get(':id')
-  getProductById(@Param() params): Product {
+  async getProductById(@Param() params): Promise<Products> {
     return this.productService.getProductById(params.id);
   }
 
   @Post()
-  createProduct(@Body() product: Product) {
+  async createProduct(@Body() product: Products) {
     product.id = 10;
     this.productService.createProduct(product);
   }
 
   @Put()
-  updateProduct(@Body() product: Product): Product {
+  async updateProduct(
+    @Body() product: Products,
+  ): Promise<[number, Products[]]> {
     return this.productService.updateProduct(product);
   }
 
   @Delete(':id')
-  deleteProduct(@Param() params) {
+  async deleteProduct(@Param() params) {
     this.productService.deleteProduct(params.id);
   }
 }
