@@ -8,38 +8,35 @@ import {
   Delete,
 } from '@nestjs/common';
 import { Product } from './products.model';
+import { ProductsService } from './products.service';
 
 @Controller('products')
 export class ProductsController {
-  products: Product[] = [
-    new Product('P001', 'Iphone 13', 150),
-    new Product('P002', 'Samsung Galaxy', 90),
-    new Product('P003', 'Motorola X', 50),
-  ];
+  constructor(private productService: ProductsService) {}
 
   @Get()
   getAll(): Product[] {
-    return this.products;
+    return this.productService.getAll();
   }
 
   @Get(':id')
   getProductById(@Param() params): Product {
-    return this.products[1];
+    return this.productService.getProductById(params.id);
   }
 
   @Post()
   createProduct(@Body() product: Product) {
     product.id = 10;
-    this.products.push(product);
+    this.productService.createProduct(product);
   }
 
   @Put()
   updateProduct(@Body() product: Product): Product {
-    return product;
+    return this.productService.updateProduct(product);
   }
 
   @Delete(':id')
   deleteProduct(@Param() params) {
-    this.products.pop();
+    this.productService.deleteProduct(params.id);
   }
 }
