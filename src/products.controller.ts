@@ -26,7 +26,7 @@ export class ProductsController {
 
   @Post()
   async createProduct(@Body() product: Products) {
-    product.id = 10;
+    product.id = 100;
     this.productService.createProduct(product);
   }
 
